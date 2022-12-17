@@ -1,14 +1,13 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 import styles from './Statistics.module.css';
 
-export default function Statistics({good, neutral, bad}) {
-  
-    let positiveFeedback = 0;
+export default function Statistics({ good, neutral, bad }) {
+  let positiveFeedback = 0;
   let totalVotes = good + neutral + bad;
-  positiveFeedback = Math.round(good/totalVotes*100);
-  
-    return (
+  positiveFeedback = Math.round((good / totalVotes) * 100);
+
+  return (
     <section className={styles.section}>
       <h2 className={styles.title}>Statistics</h2>
       <ul className={styles.list}>
@@ -30,7 +29,9 @@ export default function Statistics({good, neutral, bad}) {
         </li>
         <li className={styles.item}>
           Positive feedback:
-          <span className={styles.value}>{positiveFeedback ? positiveFeedback : 0}%</span>
+          <span className={styles.value}>
+            {positiveFeedback ? positiveFeedback : 0}%
+          </span>
         </li>
       </ul>
     </section>
