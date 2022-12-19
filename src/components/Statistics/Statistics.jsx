@@ -1,15 +1,16 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import styles from './Statistics.module.css';
 
-export default function Statistics({ good, neutral, bad }) {
-  let positiveFeedback = 0;
-  let totalVotes = good + neutral + bad;
-  positiveFeedback = Math.round((good / totalVotes) * 100);
-
+export default function Statistics({
+  good,
+  neutral,
+  bad,
+  total,
+  positivePercentage,
+}) {
   return (
     <section className={styles.section}>
-      <h2 className={styles.title}>Statistics</h2>
       <ul className={styles.list}>
         <li className={styles.item}>
           Good:
@@ -25,12 +26,12 @@ export default function Statistics({ good, neutral, bad }) {
         </li>
         <li className={styles.item}>
           Total:
-          <span className={styles.value}>{totalVotes}</span>
+          <span className={styles.value}>{total}</span>
         </li>
         <li className={styles.item}>
           Positive feedback:
           <span className={styles.value}>
-            {positiveFeedback ? positiveFeedback : 0}%
+            {positivePercentage ? positivePercentage : 0}%
           </span>
         </li>
       </ul>
@@ -38,13 +39,10 @@ export default function Statistics({ good, neutral, bad }) {
   );
 }
 
-// Statistics.propTypes = {
-//   title: PropTypes.string,
-//   stats: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       label: PropTypes.string.isRequired,
-//       percentage: PropTypes.number.isRequired,
-//       id: PropTypes.string.isRequired,
-//     })
-//   ),
-// };
+Statistics.propTypes = {
+  good: PropTypes.number,
+  neutral: PropTypes.number,
+  bad: PropTypes.number,
+  total: PropTypes.number,
+  positivePercentage: PropTypes.number,
+};

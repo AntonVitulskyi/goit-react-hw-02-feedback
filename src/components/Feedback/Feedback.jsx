@@ -1,8 +1,9 @@
-// import PropTypes from 'prop-types';
 import { Component } from 'react';
 
-import styles from './Feedback.module.css';
 import Statistics from '../Statistics/Statistics';
+import FeedbackOptions from '../Feedback/FeedbackOptions';
+import Section from '../Section/Section';
+import Notification from '../Notification/Notification';
 
 export default class Feedback extends Component {
   state = {
@@ -12,57 +13,36 @@ export default class Feedback extends Component {
   };
 
   onClickChangeValue = event => {
-    if (event.target.id === 'good') {
-      this.setState(prevState => {
-        return { good: prevState.good + 1 };
-      });
-    }
-    if (event.target.id === 'neutral') {
-      this.setState(prevState => {
-        return { neutral: prevState.neutral + 1 };
-      });
-    }
-    if (event.target.id === 'bad') {
-      this.setState(prevState => {
-        return { bad: prevState.bad + 1 };
-      });
-    }
+    this.setState(prevState => {
+      return { [event.target.name]: prevState[event.target.name] + 1 };
+    });
   };
-
   render() {
+    let { good, neutral, bad } = this.state;
+    const total = good + neutral + bad;
+    const positivePercentage = Math.round((good / total) * 100) || 0;
     return (
       <>
-        <section className={styles.section}>
-          <h2 className={styles.title}>Please leave feedback</h2>
-          <div className={styles.buttonBox} onClick={this.onClickChangeValue}>
-            <button className={styles.buttonGood} id="good">
-              Good
-            </button>
-            <button className={styles.buttonNeutral} id="neutral">
-              Neutral
-            </button>
-            <button className={styles.buttonBad} id="bad">
-              Bad
-            </button>
-          </div>
-        </section>
-        <Statistics
-          good={this.state.good}
-          neutral={this.state.neutral}
-          bad={this.state.bad}
-        />
+        <Section title="Please leave feedback">
+          <FeedbackOptions
+            options={Object.keys(this.state)}
+            onLeaveFeedback={this.onClickChangeValue}
+          />
+        </Section>
+        <Section title="Statistics">
+          {total === 0 ? (
+            <Notification message="There is no feedback" />
+          ) : (
+            <Statistics
+              good={this.state.good}
+              neutral={this.state.neutral}
+              bad={this.state.bad}
+              total={total}
+              positivePercentage={positivePercentage}
+            />
+          )}
+        </Section>
       </>
     );
   }
 }
-
-// Statistics.propTypes = {
-//   title: PropTypes.string,
-//   stats: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       label: PropTypes.string.isRequired,
-//       percentage: PropTypes.number.isRequired,
-//       id: PropTypes.string.isRequired,
-//     })
-//   ),
-// };
